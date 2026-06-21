@@ -1,0 +1,19 @@
+name: CD Dev
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t pakvista:latest .
+
+      - name: Show image info
+        run: docker images pakvista:latest

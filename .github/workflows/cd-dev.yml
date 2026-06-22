@@ -1,19 +1,23 @@
-name: CD Dev
+name: cd-dev
 
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
 
 jobs:
-  build-and-deploy:
+  deploy-development:
     runs-on: ubuntu-latest
 
+    environment:
+      name: development
+      url: https://pakvista-dev-latest-o0hv.onrender.com
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t pakvista:latest .
+      - name: Trigger Render deployment
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_DEV_URL }}
 
-      - name: Show image info
-        run: docker images pakvista:latest
+      - name: Confirm deployment
+        run: echo "Deployment to development triggered at $(date)"

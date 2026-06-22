@@ -1,0 +1,19 @@
+name: CD-Prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-to-production:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Production Deployment
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_PROD_URL }}"
